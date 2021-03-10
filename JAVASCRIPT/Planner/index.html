@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <link href="https://fonts.googleapis.com/css2?family=Abel&family=Pacifico&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous" />
+
+  <link rel="stylesheet" href="./caleandar/theme2.css" />
+  <link rel="stylesheet" href="style.css" />
+
+  <script src="https://kit.fontawesome.com/3806d93045.js" crossorigin="anonymous"></script>
+  <title>Planejamento semanal</title>
+</head>
+
+<body class="light">
+  <div id="principal">
+    <header>
+
+      <div class="row">
+        <div class="col-md col-sm-10 col-lg col-10">
+          <h1>Planejamento Semanal</h1>
+          <div class="d-flex justify-content-center" id="date">
+            <span> Hoje é: <span id="today"> </span> </span>
+          </div>
+        </div>
+
+        <div id="actions">
+          <form id="form1">
+            <div class="row">
+              <div class="col-12 col-sm-12 col-md-12 col-lg-12 select">
+                <select aria-placeholder="AQUI" class="selTheme inputtrans">
+                  <option disabled selected>Tema</option>
+                  <option value="bege">Bege</option>
+                  <option value="blue">Blue</option>
+                  <option value="brown">Brown</option>
+                  <option value="cinnamon">Cinnamon</option>
+                  <option value="dark">Dark</option>
+                  <option value="dark-blue">Dark Blue</option>
+                  <option value="earth">Earth</option>
+                  <option value="floral">Floral</option>
+                  <option value="green">Green</option>
+                  <option value="light">Light</option>
+                  <option value="pink">Pink</option>
+                  <option value="purple">Purple</option>
+                  <option value="retro">Retro</option>
+                </select>
+                <div id="buttons">
+                  <button type="button" title="Tarefas Fixas" class="btn btns btn-sm btnFixedTasks"> <i
+                      class="fas fa-tasks"></i> </button>
+                  <button type="button" title="Resetar Semana?" data-toggle="modal" data-target="#modalReset"
+                    class=" btn btns btnreset btn-sm">
+                    <i class="fas fa-trash-restore-alt"></i> </button>
+                  <button type="button" title="Estatísticas" data-toggle="modal" data-target="#modalGrafico"
+                    class="btn btns btn-sm"> <i class="fas fa-chart-pie"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </header>
+
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-lg col-md col-sm">
+          <!-- PRIMEIRA COLUNA   -->
+
+          <div class="row">
+            <!-- Linha do formulário -->
+            <div class="col-lg col-md col-sm box">
+              <form class="centerform">
+                <div class="row formulario">
+                  <div class="col-12 col-sm-12 col-md-12 col-lg-5  formbox ">
+                    <label id="new"> <span>Novo(a): </span></label>
+                    <select class="inputtrans" id="type" formControlName="type">
+                      <option value="task">■ Tarefa</option>
+                      <option value="event">● Evento</option>
+                      <option value="appointment">▲ Compromisso</option>
+                      <option value="note">⇒ Nota</option>
+                      <option value="tv">🎬 TV/Filme</option>
+                    </select>
+
+                    <input type="text" class="inputtrans desc" placeholder="Descrição" id="inputItems"
+                      formControlName="description" required />
+                  </div>
+
+                  <div class="col col-sm col-md-6 col-lg-4  formbox ">
+                    <div class="form-check form-check-inline weekDays">
+                      <input class="form-check-input" type="checkbox" id="monday" value="mon" name="where"
+                        (change)="onCheckChange($event)" />
+                      <label class="form-check-label" for="monday">S</label>
+
+                      <input class="form-check-input" type="checkbox" id="tuesday" value="tue" name="where"
+                        (change)="onCheckChange($event)" />
+                      <label class="form-check-label" for="tuesday">T</label>
+
+                      <input class="form-check-input" type="checkbox" id="wednesday" value="wed" name="where"
+                        (change)="onCheckChange($event)" />
+                      <label class="form-check-label" for="wednesday">Q</label>
+
+                      <input class="form-check-input" type="checkbox" id="thursday" value="thu" name="where"
+                        (change)="onCheckChange($event)" />
+                      <label class="form-check-label" for="thursday">Q</label>
+
+                      <input class="form-check-input" type="checkbox" id="friday" value="fri" name="where"
+                        (change)="onCheckChange($event)" />
+                      <label class="form-check-label" for="friday">S</label>
+
+                      <input class="form-check-input" type="checkbox" id="saturday" value="sat" name="where"
+                        (change)="onCheckChange($event)" />
+                      <label class="form-check-label" for="saturday">S</label>
+
+                      <input class="form-check-input" type="checkbox" id="sunday" value="sun" name="where"
+                        (change)="onCheckChange($event)" />
+                      <label class="form-check-label" for="sunday">D</label>
+                    </div>
+                  </div>
+
+                  <div class="col col-sm col-md col-lg-3  formbox form3">
+                    <div class="form-check form-check-inline" id="boxes">
+                      <input class="form-check-input" #checkbox type="checkbox" id="td" value="todo" name="where" />
+                      <label class="form-check-label" for="td">Tarefas</label>
+
+                      <input class="form-check-input" #checkbox type="checkbox" id="note" value="notes" name="where"
+                        (change)="onCheckChange($event)" />
+                      <label class="form-check-label" for="note">Notas</label>
+                    </div>
+
+
+                    <button type="submit" class="btn btn-success btn-sm" id="submit">
+                      <i class="fas fa-plus add"></i>
+                    </button>
+
+                  </div>
+                </div>
+              </form>
+            </div>
+            <!-- <form class="col-lg col-md col-sm box centerform">
+              <div class="row formulario">
+                <div class="col-md col-sm-12 col-lg formbox">
+                  <label> <span>Novo(a): </span></label>
+                  <select class="inputtrans" id="type">
+                    <option value="task">■ Tarefa</option>
+                    <option value="event">● Evento</option>
+                    <option value="appointment">▲ Compromisso</option>
+                    <option value="note">⇒ Nota</option>
+                    <option value="movie">🎬 TV/Filme</option>
+                  </select>
+
+                  <input type="text" class="inputtrans" placeholder="Descrição" id="inputItems" required />
+                </div>
+
+                <div class="col-md col-sm formbox">
+                  <div class="form-check form-check-inline weekDays">
+                    <input class="form-check-input" type="checkbox" id="monday" value="mon" name="where" />
+                    <label class="form-check-label" for="monday">S</label>
+
+                    <input class="form-check-input" type="checkbox" id="tuesday" value="tue" name="where" />
+                    <label class="form-check-label" for="tuesday">T</label>
+
+                    <input class="form-check-input" type="checkbox" id="wednesday" value="wed" name="where" />
+                    <label class="form-check-label" for="wednesday">Q</label>
+
+                    <input class="form-check-input" type="checkbox" id="thursday" value="thu" name="where" />
+                    <label class="form-check-label" for="thursday">Q</label>
+
+                    <input class="form-check-input" type="checkbox" id="friday" value="fri" name="where" />
+                    <label class="form-check-label" for="friday">S</label>
+
+                    <input class="form-check-input" type="checkbox" id="saturday" value="sat" name="where" />
+                    <label class="form-check-label" for="saturday">S</label>
+
+                    <input class="form-check-input" type="checkbox" id="sunday" value="sun" name="where" />
+                    <label class="form-check-label" for="sunday">D</label>
+                  </div>
+                </div>
+                <div class="col-md col-sm formbox form3">
+                  <div class="form-check form-check-inline" id="boxes">
+                    <input class="form-check-input" type="checkbox" id="td" value="todo" name="where" />
+                    <label class="form-check-label" for="td">Tarefas</label>
+
+                    <input class="form-check-input" type="checkbox" id="note" value="notes" name="where" />
+                    <label class="form-check-label" for="note">Notas</label>
+                  </div>
+
+                  <div class="">
+                    <button type="submit" class="btn btn-secondary btn-sm" id="submit">
+                      Lançar
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </form> -->
+
+
+          </div>
+
+          <div class="row">
+            <div id="1" class="col-lg col-md box dia-semana">
+              <!-- <img *ngIf="today == weekDay" alt="pin" src="./midia/pin.png" /> -->
+              <h4>Segunda</h4>
+
+              <div id="mon">
+                <ul class="listagem" id="mon">
+
+                </ul>
+              </div>
+            </div>
+
+            <div id="2" class="col-lg col-md-4 box dia-semana">
+
+              <h4>Terça</h4>
+
+              <div>
+                <ul class="listagem" id="tue">
+
+                </ul>
+              </div>
+            </div>
+
+            <div id="3" class="col-lg col-md box dia-semana">
+              <h4>Quarta</h4>
+              <div>
+                <ul class="listagem" id="wed">
+
+                </ul>
+              </div>
+            </div>
+
+            <div id="4" class="col-lg col-md-6 box dia-semana">
+              <h4>Quinta</h4>
+              <div>
+                <ul class="listagem" id="thu">
+
+                </ul>
+              </div>
+            </div>
+
+            <div id="5" class="col-lg col-md box dia-semana">
+              <h4>Sexta</h4>
+              <div>
+                <ul class="listagem" id="fri">
+
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div id="6" class="col-md col-sm box dia-semana">
+              <h4>Sábado</h4>
+
+              <div>
+                <ul class="listagem" id="sat">
+
+                </ul>
+              </div>
+            </div>
+
+            <div id="0" class="col-md col-sm box dia-semana">
+              <h4>Domingo</h4>
+              <div>
+                <ul class="listagem" id="sun">
+
+                </ul>
+              </div>
+            </div>
+
+            <div class="col-md box tlmd">
+              <h2>Anotações</h2>
+              <div>
+                <ul class="notes listagem" id="notes">
+
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-2 col-md-3 col-sm-4">
+          <div class="row">
+            <div class="col-md-12 box calendarBox">
+              <div id="caleandar"></div>
+            </div>
+
+            <div class="col-md-12 box">
+              <h2 id="todo">Tarefas</h2>
+              <div>
+                <ul class="todo listagem">
+
+                </ul>
+              </div>
+            </div>
+
+            <div class="col-md-12 box tlsm">
+              <h2>Anotações</h2>
+              <div>
+                <ul class="notes listagem" id="notes">
+
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="">
+    <div>
+      Desenvolvido por
+      <a href="mailto:soniamarasa@outlook.com"> Sônia Mara de Sá</a>
+    </div>
+  </footer>
+
+  <div class="modal fade" id="modalReset" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Resetar a Semana?</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <span> Tem certeza que deseja resetar a semana? Todos dados serão apagados! </span>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Não</button>
+          <button type="button" class="btn btn-success reset">Sim</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="modal fade" id="modalGrafico" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Estatísticas - Tarefas</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div>
+            <canvas id="pieChart" width="600" height="500"></canvas>
+          </div>
+        </div>
+        <div class="modal-footer justify-content-center">
+          <p>Total de tarefas lançadas: <span id="totalT"></span> (100%)</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <div class="modal fade modalEdit" id="modalEdit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Editar</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="container-fluid">
+            <form class="">
+              <div class="row formgroup">
+
+                <div class=" col col-sm col-md col-lg iditem formboxed ">
+
+                  <label> <span>ID</span></label>
+                  <input type="number" id="idItem" disabled />
+                </div>
+
+                <div class=" col-4  col-sm-4 col-md-4 col-lg-4 formboxed margin">
+
+                  <label> <span>Tipo</span></label>
+                  <select id="typeEd" name="typeEd">
+                    <option value="task">■ Tarefa</option>
+                    <option value="event">● Evento</option>
+                    <option value="appointment">▲ Compromisso</option>
+                    <option value="note">⇒ Nota</option>
+                    <option value="tv">🎬 TV/Filme</option>
+                  </select>
+                </div>
+
+                <div class=" col-4 col-sm-4 col-md-5 col-lg-5 formboxed ">
+                  <label> <span>Box</span></label>
+                  <select id="whereEd" name="whereEd">
+                    <option value="mon">Segunda</option>
+                    <option value="tue">Terça</option>
+                    <option value="wed">Quarta</option>
+                    <option value="thu">Quinta</option>
+                    <option value="fri">Sexta</option>
+                    <option value="sat">Sabado</option>
+                    <option value="sun">Domingo</option>
+                    <option value="todo">Tarefas</option>
+                    <option value="notes">Anotações</option>
+                  </select>
+                </div>
+
+              </div>
+
+              <div class="row formgroup">
+
+                <div class="col-12 col-sm-12 col-md-12 col-lg formboxed">
+                  <div class="row"> 
+                      
+                  <label> <span>Descrição:</span></label>
+                  <input type="text" placeholder="Descrição" name="descEd" id="descEd" />
+                  </div>
+                  
+                  
+                </div>
+
+
+                <div class=" formboxed col-12 col-sm-12 col-md-12 col-lg-12">
+                  
+                  <div class="row"> 
+                    <label class="col col-sm col-md col-lg"> <span>Observação:</span></label>
+                    <input type="text" class="col col-sm col-md-7 col-lg-7 inputTextEd" placeholder="Observação" name="obsEd"
+                      id="obsEd" />
+                  </div>
+
+                </div>
+
+              </div>
+            </form>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-success updateItem">Salvar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+    integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+    integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+    crossorigin="anonymous"></script>
+  <script src="./caleandar/caleandar.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <script src="./script.js"></script>
+</body>
+
+</html>

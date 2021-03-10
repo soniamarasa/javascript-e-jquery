@@ -1,0 +1,112 @@
+.cld-main {
+  width: inherit;
+}
+.cld-main a {
+  color: var(--tertiary-color);
+}
+
+
+.cld-main svg {
+  fill: var(--tertiary-color);
+}
+.cld-datetime {
+  position: relative;
+  width: 90%;
+  max-width: inherit;
+  margin: auto;
+  overflow: hidden;
+}
+.cld-datetime .today {
+  position: relative;
+  float: left;
+  width: calc(100% - 40px);
+  margin: auto;
+  text-align: center;
+}
+.cld-nav {
+  position: relative;
+  width: 20px;
+  height: 20px;
+}
+.cld-nav:hover {
+  cursor: pointer;
+}
+.cld-nav:hover svg {
+  fill: var(--primary-color);
+}
+.cld-rwd {
+  float: left;
+}
+.cld-fwd {
+  float: right;
+}
+.cld-nav svg:hover {
+  color: red;
+}
+
+.cld-label,
+.cld-day {
+  box-sizing: border-box;
+  display: inline-block;
+  width: 14.28%;
+  text-align: center;
+  
+}
+
+.cld-day.today .cld-number {
+  background: var(--primary-color);
+  border-radius: 0.2em;
+  font-weight: 900;
+  color: var(--tertiary-color);
+}
+.cld-day.disableDay {
+  opacity: 0.5;
+}
+.cld-day.nextMonth,
+.cld-day.prevMonth {
+  opacity: 0.33;
+}
+.cld-number {
+  position: relative;
+  margin: 0;
+}
+.cld-title {
+  position: absolute;
+  z-index: 5;
+  display: none;
+  top: 35px;
+  left: 0;
+  padding: 5px 10px;
+  background: #312f2e;
+  white-space: nowrap;
+  border-radius: 5px;
+  font-size: 12px;
+
+}
+.cld-number:hover .cld-title {
+  display: block;
+}
+.cld-title::before {
+  content: '';
+  position: absolute;
+  top: -7.5px;
+  left: 10px;
+  width: 0;
+  height: 0;
+  border-left: 7.5px solid transparent;
+  border-right: 7.5px solid transparent;
+
+  border-bottom: 7.5px solid #ccc;
+}
+.cld-number.eventday {
+  font-weight: bold;
+  color: var(--tertiary-color);
+}
+.cld-number.eventday:hover {
+  cursor: pointer;
+  background:inherit;
+}
+.today .cld-number.eventday:hover {
+  background: #005eff;
+}
+
