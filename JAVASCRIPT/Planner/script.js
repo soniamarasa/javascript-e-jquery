@@ -1,6 +1,5 @@
 let selectTheme = null;
 let body = null;
-let actionsMenu = null;
 const icons = [
   '<i class="fas fa-square"></i>',
   '<i class="fas fa-circle"></i>',
@@ -8,13 +7,16 @@ const icons = [
   '<i class="fas fa-pen"></i>',
   '<i class="fas fa-film"></i> ',
 ];
-let editing = false;
+let actionsMenu = null;
+let obs = null;
 let type = null;
 let description = null;
 let where = [];
 let submit = null;
 let checkboxes = [];
 let daysList = document.querySelectorAll('.dia-semana');
+
+let lastId = null;
 
 let typeEd = document.querySelector('#typeEd');
 let whereEd = document.querySelector('#whereEd');
@@ -23,7 +25,7 @@ let obsEd = document.querySelector('#obsEd');
 let updateItem = document.querySelector('.updateItem');
 let idCurrentItem = document.querySelector('#idItem');
 
-let u = [];
+
 let getIdDay = [];
 
 let id = null;
@@ -31,6 +33,15 @@ let allItems = Array();
 let weeklist = document.querySelectorAll('.listagem');
 let itemList = [];
 let iconsAction = [];
+
+let typeValue = null;
+let whereValue = null;
+let descValue = null;
+let obsValue = null;
+
+let currentDataId;
+let itemDataBase;
+let getItem = null;
 
 let totalTarefas = document.querySelector('#totalT');
 let tarefas = null;
@@ -42,9 +53,6 @@ let canceladas = null;
 let total = null;
 let porcent = null;
 let taskData = [];
-
-let xi = null;
-let yi = null;
 
 var settings = {
   Color: '',
@@ -79,26 +87,29 @@ var events = [
 var element = document.getElementById('caleandar');
 caleandar(element, events, settings);
 
-window.addEventListener('load', () => {
-  itemList = document.querySelectorAll('.item');
-  itemList = Array.from(itemList);
+body = document.querySelector('body');
 
-  body = document.querySelector('body');
-  selectTheme = document.querySelector('.selTheme');
+selectTheme = document.querySelector('.selTheme');
+selectTheme.value = localStorage.getItem('theme');
+
+if (localStorage.getItem('theme')) {
+  body.className = localStorage.getItem('theme');
+} else {
+  localStorage.setItem('theme', 'light');
   selectTheme.value = localStorage.getItem('theme');
+}
 
-  if (localStorage.getItem('theme')) {
-    body.className = localStorage.getItem('theme');
-  } else {
-    localStorage.setItem('theme', 'light');
-    selectTheme.value = localStorage.getItem('theme');
-  }
+selectTheme.addEventListener(
+  'change',
+  (e) => {
+    body.className = e.target.value;
+    localStorage.setItem('theme', body.getAttribute('class'));
+  },
+  false
+);
 
-  selectTheme.addEventListener('change', changeTheme, false);
-
+window.addEventListener('load', () => {
   submit = document.getElementById('submit');
-  submit.addEventListener('click', newItem, false);
-
   type = document.getElementById('type');
   description = document.getElementById('inputItems');
   checkboxes = document.getElementsByName('where');
@@ -108,12 +119,32 @@ window.addEventListener('load', () => {
     checkboxes[i].addEventListener(
       'click',
       (event) => {
-        where[i] = event.target.value;
-        console.log(where);
+        if (event.target.checked === true) {
+          where[i] = event.target.value;
+          console.log(where);
+        } else {
+          where[i] = null;
+        }
       },
       false
     );
   }
+
+  submit.addEventListener(
+    'click',
+    (e) => {
+      if (where.length === 0) {
+        e.preventDefault();
+        bootbox.alert({
+          message:
+            " <i class='fas fa-exclamation-triangle'></i>  É obrigatório marcar ao menos uma caixa de seleção",
+        });
+      } else {
+        newItem();
+      }
+    },
+    false
+  );
 
   let btnReset = document.querySelector('.reset');
   btnReset.addEventListener('click', () => {
@@ -127,131 +158,111 @@ window.addEventListener('load', () => {
     window.location.reload();
   });
 
-  dates();
-  getItems();
-
-  function getValue(itemId) {
-    const id = itemId.dataset.id;
-    const itemDataBase = localStorage.getItem(id);
-    const getItem = JSON.parse(itemDataBase);
-
-    idCurrentItem.value = id;
-    typeEd.value = getItem.type;
-    whereEd.value = getItem.where;
-    descEd.value = getItem.description;
-    obsEd.value = getItem.obs;
-
-    updateItem.addEventListener('click', editItem1(itemId));
-  }
-
-  function editItem1(itemId) {
-    const id = itemId.dataset.id;
-    const itemDataBase = localStorage.getItem(id);
-    const getItem = JSON.parse(itemDataBase);
-
-    let updateItem = {
-      type: typeEd.value,
-      where: whereEd.value,
-      description: descEd.value,
-      obs: obsEd.value,
-      started: getItem.started,
-      finished: getItem.finished,
-      important: getItem.important,
-      canceled: getItem.canceled,
-    };
-
-    localStorage.setItem(id, JSON.stringify(updateItem));
-    console.log(updateItem);
-  }
-
-  function UpdateClass(itemId, s, f, i, c) {
-    const id = itemId.dataset.id;
-    const itemDataBase = localStorage.getItem(id);
-    const getItem = JSON.parse(itemDataBase);
-
-    let updateItem = {
-      type: getItem.type,
-      where: getItem.where,
-      description: getItem.description,
-      obs: getItem.obs,
-      started: s,
-      finished: f,
-      important: i,
-      canceled: c,
-    };
-
-    localStorage.setItem(id, JSON.stringify(updateItem));
-    console.log(updateItem);
-  }
-
   for (let g = 0; g < weeklist.length; g++) {
     weeklist[g].addEventListener(
       'click',
       function (e) {
         itemId = e.target;
-        console.log(itemId);
-        actionsItem(itemId);
+
+        if (lastId !== itemId.dataset.id) {
+          lastId = itemId.dataset.id;
+          if (actionsMenu !== null) actionsMenu.remove();
+          actionsItem(itemId);
+        } else {
+          lastId = null;
+          actionsMenu.remove();
+        }
       },
       false
     );
   }
 
-  function actionsItem(itemList) {
-    actionsMenu = document.createElement('div');
-    actionsMenu.className = 'acoes';
-    actionsMenu.innerHTML =
-      '<i class="fas fa-play bt" id="started" title="Iniciada"></i>' +
-      '<i class="fas fa-check-square bt" id="finished" title="Completa"></i>' +
-      '<i class="fas  fa-exclamation-triangle bt" id="important" title="Importante"></i>' +
-      '<i class="fas fa-window-close bt" id="canceled" title="Cancelado(a)"></i>' +
-      '<i class="fas fa-edit bt" id="edit" data-toggle="modal" data-target="#modalEdit" title="Editar"></i>' +
-      '<i class="fas fa-trash-alt bt" id="delete" title="Deletar"></i>';
-
-    itemList.appendChild(actionsMenu);
-
-    iconsAction = document.querySelectorAll('.bt');
-
-    for (let d = 0; d < iconsAction.length; d++) {
-      iconsAction[d].addEventListener(
-        'click',
-        () => {
-          if (iconsAction[d].id === 'started') {
-            UpdateClass(itemList, true, false, false, false);
-            itemList.classList.add('started');
-            actionsMenu.remove();
-          } else if (iconsAction[d].id === 'finished') {
-            UpdateClass(itemList, false, true, false, false);
-            itemList.classList.add('finished');
-            actionsMenu.remove();
-          } else if (iconsAction[d].id === 'important') {
-            UpdateClass(itemList, false, false, true, false);
-            itemList.classList.add('important');
-            actionsMenu.remove();
-          } else if (iconsAction[d].id === 'canceled') {
-            UpdateClass(itemList, false, false, false, true);
-            itemList.classList.add('canceled');
-            actionsMenu.remove();
-          } else if (iconsAction[d].id === 'edit') {
-            getValue(itemList);
-            actionsMenu.remove();
-          } else if (iconsAction[d].id === 'delete') {
-            actionsMenu.remove();
-            bd.remover(itemList.dataset.id);
-            console.log('deletar');
-            itemList.remove();
-          }
-        },
-        false
-      );
-    } //aqui
-    itemList.removeEventListener('click', actionsItem, false);
-  }
-
+  dates();
+  getItems();
   itemList = document.querySelectorAll('.item');
   itemList = Array.from(itemList);
+  applyclass();
 
-  applyclass(itemList);
+  observation();
 });
+
+class Item {
+  constructor(type, description, where) {
+      (this.type = type),
+      (this.description = description),
+      (this.where = where),
+      (this.obs = ''),
+      (this.started = false),
+      (this.finished = false),
+      (this.important = false),
+      (this.canceled = false);
+  }
+
+  validarDados() {
+    for (let i in this) {
+      if (this[i] == undefined || this[i] == null) {
+        return false;
+      }
+    }
+    return true;
+  }
+}
+
+class Bd {
+  constructor() {
+    let id = localStorage.getItem('id');
+
+    if (id === null) {
+      localStorage.setItem('id', 0);
+    }
+  }
+
+  getProximoId() {
+    let proximoId = localStorage.getItem('id');
+    return parseInt(proximoId) + 1;
+  }
+
+  gravar(d) {
+    let id = this.getProximoId();
+    localStorage.setItem(id, JSON.stringify(d));
+    localStorage.setItem('id', id);
+  }
+
+  remover(id) {
+    localStorage.removeItem(id);
+  }
+}
+
+let bd = new Bd();
+
+function newItem() {
+  for (let i = 0; i < where.length; i++) {
+    if (where[i]) {
+      let newItem = new Item(type.value, description.value, where[i]);
+
+      if (newItem.validarDados()) {
+        bd.gravar(newItem);
+      }
+    }
+  }
+}
+
+function itensFixed() {
+  const itensFixed1 = [
+    'Checar Email',
+    'Atividade Fisíca',
+    'Beber Água',
+    'Leitura',
+    'Inglês',
+  ];
+  const whereItensFixed = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
+  for (let y = 0; y < itensFixed1.length; y++) {
+    for (let i = 0; i < whereItensFixed.length; i++) {
+      let newItem = new Item('task', itensFixed1[y], whereItensFixed[i]);
+      bd.gravar(newItem);
+    }
+  }
+}
 
 function getItems() {
   id = localStorage.getItem('id');
@@ -271,50 +282,6 @@ function getItems() {
   dataChart();
 }
 
-function dataChart() {
-  allItems.forEach((items) => {
-    if (items.type === 'task') {
-      tarefas += 1;
-      if (items.started) {
-        iniciadas += 1;
-      } else if (items.finished) {
-        concluidas += 1;
-      } else if (items.canceled) {
-        canceladas += 1;
-      } else if (items.important) {
-        importantes += 1;
-      } else if (
-        !items.important &&
-        !items.finished &&
-        !items.started &&
-        !items.canceled
-      ) {
-        emAberto += 1;
-      }
-      total += 1;
-    }
-  });
-
-  porcent = 100 / total;
-
-  iniciadas *= porcent;
-  concluidas *= porcent;
-  canceladas *= porcent;
-  importantes *= porcent;
-  emAberto *= porcent;
-
-  taskData = [
-    emAberto.toFixed(2),
-    iniciadas.toFixed(2),
-    concluidas.toFixed(2),
-    canceladas.toFixed(2),
-    importantes.toFixed(2),
-  ];
-
-  totalTarefas.textContent = tarefas;
-  pieChart(taskData);
-}
-
 function renderItems() {
   let notes = document.querySelectorAll('.notes');
   let todo = document.querySelector('.todo');
@@ -322,44 +289,44 @@ function renderItems() {
   allItems.forEach((item) => {
     if (item.type === 'task') {
       itemList =
-        '<li  class="item task" data-id="' +
+        '<li  class="item task 1 " data-id="' +
         item.id +
         '">' +
         icons[0] +
         item.description +
-        '</li>';
+        ' <span> </span> </li>';
     } else if (item.type === 'appointment') {
       itemList =
-        '<li  class="item appointment" data-id="' +
+        '<li  class="item appointment 2" data-id="' +
         item.id +
         '">' +
         icons[2] +
         item.description +
-        '</li>';
+        ' <span> </span> </li>';
     } else if (item.type === 'event') {
       itemList =
-        '<li  class="item event " data-id="' +
+        '<li  class="item event 3 " data-id="' +
         item.id +
         '">' +
         icons[1] +
         item.description +
-        '</li>';
+        ' <span> </span> </li>';
     } else if (item.type === 'note') {
       itemList =
-        '<li  class="item note" data-id="' +
+        '<li  class="item note 4" data-id="' +
         item.id +
         '">' +
         icons[3] +
         item.description +
-        '</li>';
+        ' <span> </span> </li>';
     } else {
       itemList =
-        '<li  class="item tv" data-id="' +
+        '<li  class="item tv 5" data-id="' +
         item.id +
         '">' +
         icons[4] +
         item.description +
-        '</li>';
+        ' <span> </span> </li>';
     }
 
     switch (item.where) {
@@ -414,81 +381,144 @@ function applyclass() {
   }
 }
 
-function changeTheme(event) {
-  body.className = event.target.value;
-  localStorage.setItem('theme', body.getAttribute('class'));
+function actionsItem(itemList) {
+  actionsMenu = document.createElement('div');
+  actionsMenu.className = 'acoes';
+  actionsMenu.innerHTML =
+    '<i class="fas fa-play bt" id="started" title="Iniciada"></i>' +
+    '<i class="fas fa-check-square bt" id="finished" title="Completa"></i>' +
+    '<i class="fas  fa-exclamation-triangle bt" id="important" title="Importante"></i>' +
+    '<i class="fas fa-window-close bt" id="canceled" title="Cancelado(a)"></i>' +
+    '<i class="fas fa-edit bt" id="edit" data-toggle="modal" data-target="#modalEdit" title="Editar"></i>' +
+    '<i class="fas fa-trash-alt bt" id="delete" title="Deletar"></i>';
+
+  itemList.appendChild(actionsMenu);
+
+  iconsAction = document.querySelectorAll('.bt');
+
+  for (let d = 0; d < iconsAction.length; d++) {
+    iconsAction[d].addEventListener(
+      'click',
+      () => {
+        if (iconsAction[d].id === 'started') {
+          UpdateClass(itemList.dataset.id, true, false, false, false);
+          itemList.removeEventListener('click', actionsItem, false);
+        } else if (iconsAction[d].id === 'finished') {
+          UpdateClass(itemList.dataset.id, false, true, false, false);
+          itemList.removeEventListener('click', actionsItem, false);
+        } else if (iconsAction[d].id === 'important') {
+          UpdateClass(itemList.dataset.id, false, false, true, false);
+          itemList.removeEventListener('click', actionsItem, false);
+        } else if (iconsAction[d].id === 'canceled') {
+          UpdateClass(itemList.dataset.id, false, false, false, true);
+          itemList.removeEventListener('click', actionsItem, false);
+        } else if (iconsAction[d].id === 'edit') {
+          getValue(itemList.dataset.id);
+          itemList.removeEventListener('click', actionsItem, false);
+        } else if (iconsAction[d].id === 'delete') {
+          bd.remover(itemList.dataset.id);
+          itemList.removeEventListener('click', actionsItem, false);
+          window.location.reload();
+        } else {
+          actionsMenu.remove();
+        }
+        actionsMenu.remove();
+      },
+      false
+    );
+  }
+  itemList.removeEventListener('click', actionsItem, false);
 }
 
-class Item {
-  constructor(type, description, where) {
-    (this.type = type),
-      (this.description = description),
-      (this.where = where),
-      (this.obs = ''),
-      (this.started = false),
-      (this.finished = false),
-      (this.important = false),
-      (this.canceled = false);
-  }
-
-  validarDados() {
-    if (where == '') {
-      return false;
-    }
-
-    return true;
-  }
+function getItemLS(itemId) {
+  id = itemId;
+  itemDataBase = localStorage.getItem(id);
+  getItem = JSON.parse(itemDataBase);
 }
 
-class Bd {
-  constructor() {
-    let id = localStorage.getItem('id');
-
-    if (id === null) {
-      localStorage.setItem('id', 0);
-    }
-  }
-
-  getProximoId() {
-    let proximoId = localStorage.getItem('id');
-    return parseInt(proximoId) + 1;
-  }
-
-  gravar(d) {
-    let id = this.getProximoId();
-    localStorage.setItem(id, JSON.stringify(d));
-    localStorage.setItem('id', id);
-  }
-
-  remover(id) {
-    localStorage.removeItem(id);
-  }
+function getValue(itemId) {
+  getItemLS(itemId);
+  idCurrentItem.value = itemId;
+  typeEd.value = getItem.type;
+  whereEd.value = getItem.where;
+  descEd.value = getItem.description;
+  obsEd.value = getItem.obs;
 }
 
-let bd = new Bd();
+typeEd.addEventListener('change', (e) => {
+  typeValue = e.target.value;
+});
 
-function newItem() {
-  for (let i = 0; i < where.length; i++) {
-    if (where[i]) {
-      let newItem = new Item(type.value, description.value, where[i]);
+whereEd.addEventListener('change', (e) => {
+  whereValue = e.target.value;
+  console.log(whereValue);
+});
 
-      console.log(newItem);
-      if (newItem.validarDados()) {
-        bd.gravar(newItem);
-      }
-    } else {
-      console.log('preencher');
-    }
-  }
+descEd.addEventListener('keyup', (e) => {
+  descValue = e.target.value;
+  console.log(descValue);
+});
+
+obsEd.addEventListener('keyup', (e) => {
+  obsValue = e.target.value;
+  console.log(obsValue);
+});
+
+updateItem.addEventListener('click', () => {
+  getItemLS(id);
+
+  const type = typeValue === null ? typeEd.value : typeValue;
+  const where = whereValue === null ? whereEd.value : whereValue;
+  const description = descValue === null ? descEd.value : descValue;
+  const obs = obsValue === null ? obsEd.value : obsValue;
+
+  let updateItem = {
+    type,
+    where,
+    description,
+    obs,
+    started: getItem.started,
+    finished: getItem.finished,
+    important: getItem.important,
+    canceled: getItem.canceled,
+  };
+
+  localStorage.setItem(id, JSON.stringify(updateItem));
+  console.log(updateItem);
+  window.location.reload();
+});
+
+function UpdateClass(itemId, s, f, i, c) {
+  getItemLS(itemId);
+
+  let updateItem = {
+    type: getItem.type,
+    where: getItem.where,
+    description: getItem.description,
+    obs: getItem.obs,
+    started: getItem.started === false ? s : false,
+    finished: getItem.finished === false ? f : false,
+    important: getItem.important === false ? i : false,
+    canceled: getItem.canceled === false ? c : false,
+  };
+
+  localStorage.setItem(id, JSON.stringify(updateItem));
+  window.location.reload();
 }
 
-function itensFixed() {
-  const itensFixed1 = ['Checar Email', 'Inglês', 'Beber Água', 'Leitura'];
-  const whereItensFixed = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
-  for (let y = 0; y < itensFixed1.length; y++) {
-    for (let i = 0; i < whereItensFixed.length; i++) {
-      let newItem = new Item('task', itensFixed1[y], whereItensFixed[i]);
-      bd.gravar(newItem);
+function observation() {
+  for (i = 0; i < itemList.length; i++) {
+    let id = itemList[i].dataset.id;
+
+    let itemDataBase = localStorage.getItem(id);
+    let getItem = JSON.parse(itemDataBase);
+
+    obs = document.createElement('p');
+    obs.className = 'obs';
+
+    if (getItem.obs) {
+      obs.innerHTML = '<i class="fas fa-hand-point-right"></i>' + getItem.obs;
+      itemList[i].appendChild(obs);
     }
   }
 }
@@ -578,4 +608,48 @@ function pieChart(taskData) {
     type: 'pie',
     data: itemData,
   });
+}
+
+function dataChart() {
+  allItems.forEach((items) => {
+    if (items.type === 'task') {
+      tarefas += 1;
+      if (items.started) {
+        iniciadas += 1;
+      } else if (items.finished) {
+        concluidas += 1;
+      } else if (items.canceled) {
+        canceladas += 1;
+      } else if (items.important) {
+        importantes += 1;
+      } else if (
+        !items.important &&
+        !items.finished &&
+        !items.started &&
+        !items.canceled
+      ) {
+        emAberto += 1;
+      }
+      total += 1;
+    }
+  });
+
+  porcent = 100 / total;
+
+  iniciadas *= porcent;
+  concluidas *= porcent;
+  canceladas *= porcent;
+  importantes *= porcent;
+  emAberto *= porcent;
+
+  taskData = [
+    emAberto.toFixed(2),
+    iniciadas.toFixed(2),
+    concluidas.toFixed(2),
+    canceladas.toFixed(2),
+    importantes.toFixed(2),
+  ];
+
+  totalTarefas.textContent = tarefas;
+  pieChart(taskData);
 }

@@ -23,7 +23,7 @@ body {
   padding: 10px;
   margin-right: 10px;
   word-break: keep-all;
-  word-wrap: break-word;
+  word-wrap: break-word ;
   font-weight: 600;
   background-color: rgb(233, 233, 233);
 }
@@ -254,33 +254,34 @@ h2 {
   color: #1e3033;
 }
 
-.retro {
-  background-color: #b48422;
-  color: #4a3d34;
+.retro,
+.retro .acoes {
+  background-color: #ca884b;
+  color: #fbd266;
 }
 
 .retro h1,
 .retro a:link,
 .retro div .cld-label {
-  color: #e5dfaa;
+  color: #dfc07c;
 }
 
 .retro h4 {
-  color: #f74c42;
+  color:  #c79935;
 }
 
 .retro h2,
 .retro label span,
 .retro .cld-datetime {
-  color: #03b093;
+  color: #92b373;
 }
 
 .retro .box,
 .retro .inputtrans,
 .retro .btns,
 .retro ::placeholder {
-  background-color: #4a3d34;
-  color: #92b373;
+  background-color: #f5b46e;
+  color:  #bb683f;
 }
 
 .cinnamon {
@@ -370,7 +371,8 @@ h2 {
   color: #cd996a;
 }
 
-.floral {
+.floral,
+.floral .acoes {
   background-color: #7e7868;
 }
 
@@ -543,11 +545,6 @@ i {
   color: var(--tertiary-color);
 }
 
-#obs svg {
-  stroke: var(--tertiary-color);
-  stroke-width: 1.7px;
-}
-
 /* Estilizando Temas especificos */
 
 .blue .started,
@@ -591,14 +588,6 @@ i {
   color: var(--quaternary-color);
 }
 
-.blue #obs svg,
-.cinnamon #obs svg,
-.earth #obs svg,
-.green #obs svg {
-  stroke: var(--quaternary-color);
-  stroke-width: 1.7px;
-}
-
 /* fim */
 
 .modal-header {
@@ -613,7 +602,6 @@ i {
 
 .modal-body {
   background-color: #f0f0f0;
- 
 }
 
 /* CALENDAR CONFIG */
@@ -645,10 +633,10 @@ div .cld-label {
 
 /* FIM CONFIG CALENDAR */
 
-.floral .acoes,
+
 .light .acoes,
 .pink .acoes {
-  background-color: rgba(0, 0, 0, 0.05) !important;
+  background-color: rgba(0, 0, 0, 0.1) !important;
 }
 
 ul li app-actions-item .finished,
@@ -733,9 +721,9 @@ footer {
   margin-right: 0px;
 }
 
-.floral .acoes {
+/* .floral .acoes {
   background-color: rgba(0, 0, 0, 0.774) !important;
-}
+} */
 
 #actions {
   position: absolute;
@@ -812,19 +800,7 @@ i {
 
 /* Grafico */
 
-
 /* fim */
-
-#obs {
-  margin-top: -5px;
-  margin-bottom: 0;
-  padding-left: 5px;
-}
-
-#obs svg {
-  stroke: var(--tertiary-color);
-  stroke-width: 1.7px;
-}
 
 label {
   margin-right: 0.5em;
@@ -904,12 +880,10 @@ img {
 
 /* MODDAL EDIT */
 
-
-
 .modal-body input,
 .modal-body select {
   background-color: transparent;
-  color: rgb(66, 66, 66);
+  color: rgb(0, 0, 0);
   outline: none;
   border-radius: 5px;
   font-weight: bold;
@@ -920,8 +894,6 @@ img {
   display: flex;
   justify-content: space-between;
 }
-
-
 
 .modal-body option {
   text-align: center;
@@ -938,6 +910,7 @@ img {
 }
 
 .modal-body ::placeholder {
+  background-color: transparent !important;
   width: 90%;
 }
 
@@ -964,44 +937,17 @@ img {
   width: 100%;
 }
 
-.modal-body .button {
-  display: flex;
-  justify-content: flex-end;
-  margin-right: 0;
-  padding-right: 0;
-}
-
-
 .modal-body .margin {
   margin-left: 0.5em;
   margin-right: 0.5em;
 }
 
 @media (max-width: 991px) {
-  
   .modal-body .button {
     display: flex;
     justify-content: center;
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 /* MODDAL RESET */
 
@@ -1027,20 +973,31 @@ div .reset button {
 
 /* FIM MODAIS */
 
-li.finished::after {
+.obs {
+  margin-bottom: 0;
+  padding-left: 0.3em;
+  word-break: keep-all;
+  word-wrap:break-word;
+}
+
+.obs i {
+  color: var(--quaternary-color);
+}
+
+li.finished span::after {
   content: ' \2713';
   margin-right: 5px;
   font-weight: bold;
   color: green !important;
 }
 
-li.important::after {
+li.important span::after {
   content: ' \2757';
   font-weight: bold;
   color: var(--quaternary-color);
 }
 
-li.canceled::after {
+li.canceled span::after {
   content: ' \2717';
   font-weight: bold;
   color: var(--quaternary-color);
@@ -1054,14 +1011,31 @@ li.canceled::after {
 }
 
 .modal-footer {
-  font-family: Abel  !important;
+  font-family: Abel !important;
   font-size: 2em;
   font-weight: bold;
-
 }
 
-.iditem input {
- width: 30px ;
+.iditem {
   text-align: center;
 }
 
+#obsEd,
+#descEd, #dateEvent, #obsEvent, #nameEvent {
+  width: 100%;
+}
+
+div .bootbox-body {
+  color: var(--tertiary-color);
+  font-weight: bold;
+  text-align: center;
+}
+
+#addEvent {
+  margin-top: 0.5em;
+  text-align: center;
+}
+
+#event-modal i {
+padding-right: 0.2em;
+}

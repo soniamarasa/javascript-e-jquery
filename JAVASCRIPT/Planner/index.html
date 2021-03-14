@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 
 <head>
   <meta charset="UTF-8" />
@@ -10,6 +10,7 @@
     integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous" />
 
   <link rel="stylesheet" href="./caleandar/theme2.css" />
+
   <link rel="stylesheet" href="style.css" />
 
   <script src="https://kit.fontawesome.com/3806d93045.js" crossorigin="anonymous"></script>
@@ -91,43 +92,35 @@
 
                   <div class="col col-sm col-md-6 col-lg-4  formbox ">
                     <div class="form-check form-check-inline weekDays">
-                      <input class="form-check-input" type="checkbox" id="monday" value="mon" name="where"
-                        (change)="onCheckChange($event)" />
+                      <input class="form-check-input" type="checkbox" id="monday" value="mon" name="where" />
                       <label class="form-check-label" for="monday">S</label>
 
-                      <input class="form-check-input" type="checkbox" id="tuesday" value="tue" name="where"
-                        (change)="onCheckChange($event)" />
+                      <input class="form-check-input" type="checkbox" id="tuesday" value="tue" name="where" />
                       <label class="form-check-label" for="tuesday">T</label>
 
-                      <input class="form-check-input" type="checkbox" id="wednesday" value="wed" name="where"
-                        (change)="onCheckChange($event)" />
+                      <input class="form-check-input" type="checkbox" id="wednesday" value="wed" name="where" />
                       <label class="form-check-label" for="wednesday">Q</label>
 
-                      <input class="form-check-input" type="checkbox" id="thursday" value="thu" name="where"
-                        (change)="onCheckChange($event)" />
+                      <input class="form-check-input" type="checkbox" id="thursday" value="thu" name="where" />
                       <label class="form-check-label" for="thursday">Q</label>
 
-                      <input class="form-check-input" type="checkbox" id="friday" value="fri" name="where"
-                        (change)="onCheckChange($event)" />
+                      <input class="form-check-input" type="checkbox" id="friday" value="fri" name="where" />
                       <label class="form-check-label" for="friday">S</label>
 
-                      <input class="form-check-input" type="checkbox" id="saturday" value="sat" name="where"
-                        (change)="onCheckChange($event)" />
+                      <input class="form-check-input" type="checkbox" id="saturday" value="sat" name="where" />
                       <label class="form-check-label" for="saturday">S</label>
 
-                      <input class="form-check-input" type="checkbox" id="sunday" value="sun" name="where"
-                        (change)="onCheckChange($event)" />
+                      <input class="form-check-input" type="checkbox" id="sunday" value="sun" name="where" />
                       <label class="form-check-label" for="sunday">D</label>
                     </div>
                   </div>
 
                   <div class="col col-sm col-md col-lg-3  formbox form3">
                     <div class="form-check form-check-inline" id="boxes">
-                      <input class="form-check-input" #checkbox type="checkbox" id="td" value="todo" name="where" />
+                      <input class="form-check-input" type="checkbox" id="td" value="todo" name="where" />
                       <label class="form-check-label" for="td">Tarefas</label>
 
-                      <input class="form-check-input" #checkbox type="checkbox" id="note" value="notes" name="where"
-                        (change)="onCheckChange($event)" />
+                      <input class="form-check-input" type="checkbox" id="note" value="notes" name="where" />
                       <label class="form-check-label" for="note">Notas</label>
                     </div>
 
@@ -140,69 +133,12 @@
                 </div>
               </form>
             </div>
-            <!-- <form class="col-lg col-md col-sm box centerform">
-              <div class="row formulario">
-                <div class="col-md col-sm-12 col-lg formbox">
-                  <label> <span>Novo(a): </span></label>
-                  <select class="inputtrans" id="type">
-                    <option value="task">■ Tarefa</option>
-                    <option value="event">● Evento</option>
-                    <option value="appointment">▲ Compromisso</option>
-                    <option value="note">⇒ Nota</option>
-                    <option value="movie">🎬 TV/Filme</option>
-                  </select>
-
-                  <input type="text" class="inputtrans" placeholder="Descrição" id="inputItems" required />
-                </div>
-
-                <div class="col-md col-sm formbox">
-                  <div class="form-check form-check-inline weekDays">
-                    <input class="form-check-input" type="checkbox" id="monday" value="mon" name="where" />
-                    <label class="form-check-label" for="monday">S</label>
-
-                    <input class="form-check-input" type="checkbox" id="tuesday" value="tue" name="where" />
-                    <label class="form-check-label" for="tuesday">T</label>
-
-                    <input class="form-check-input" type="checkbox" id="wednesday" value="wed" name="where" />
-                    <label class="form-check-label" for="wednesday">Q</label>
-
-                    <input class="form-check-input" type="checkbox" id="thursday" value="thu" name="where" />
-                    <label class="form-check-label" for="thursday">Q</label>
-
-                    <input class="form-check-input" type="checkbox" id="friday" value="fri" name="where" />
-                    <label class="form-check-label" for="friday">S</label>
-
-                    <input class="form-check-input" type="checkbox" id="saturday" value="sat" name="where" />
-                    <label class="form-check-label" for="saturday">S</label>
-
-                    <input class="form-check-input" type="checkbox" id="sunday" value="sun" name="where" />
-                    <label class="form-check-label" for="sunday">D</label>
-                  </div>
-                </div>
-                <div class="col-md col-sm formbox form3">
-                  <div class="form-check form-check-inline" id="boxes">
-                    <input class="form-check-input" type="checkbox" id="td" value="todo" name="where" />
-                    <label class="form-check-label" for="td">Tarefas</label>
-
-                    <input class="form-check-input" type="checkbox" id="note" value="notes" name="where" />
-                    <label class="form-check-label" for="note">Notas</label>
-                  </div>
-
-                  <div class="">
-                    <button type="submit" class="btn btn-secondary btn-sm" id="submit">
-                      Lançar
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </form> -->
-
 
           </div>
 
           <div class="row">
             <div id="1" class="col-lg col-md box dia-semana">
-              <!-- <img *ngIf="today == weekDay" alt="pin" src="./midia/pin.png" /> -->
+
               <h4>Segunda</h4>
 
               <div id="mon">
@@ -286,6 +222,11 @@
           <div class="row">
             <div class="col-md-12 box calendarBox">
               <div id="caleandar"></div>
+              <div id="addEvent">
+                <button type="button" class="btn btn-success btn-sm"  data-toggle="modal" data-target="#modalEvent" id="event-modal">
+                  <i class="fas fa-plus add"></i> Adicionar evento
+                </button>
+              </div>
             </div>
 
             <div class="col-md-12 box">
@@ -379,13 +320,13 @@
             <form class="">
               <div class="row formgroup">
 
-                <div class=" col col-sm col-md col-lg iditem formboxed ">
+                <div class=" col-2 col-sm-2 col-md-2 col-lg-2 iditem formboxed ">
 
                   <label> <span>ID</span></label>
                   <input type="number" id="idItem" disabled />
                 </div>
 
-                <div class=" col-4  col-sm-4 col-md-4 col-lg-4 formboxed margin">
+                <div class=" col  col-sm col-md col-lg formboxed margin">
 
                   <label> <span>Tipo</span></label>
                   <select id="typeEd" name="typeEd">
@@ -415,29 +356,19 @@
               </div>
 
               <div class="row formgroup">
-
-                <div class="col-12 col-sm-12 col-md-12 col-lg formboxed">
-                  <div class="row"> 
-                      
+                <div class="col-12 col-sm-12 col-md-12 col-lg-12 formboxed">
                   <label> <span>Descrição:</span></label>
-                  <input type="text" placeholder="Descrição" name="descEd" id="descEd" />
-                  </div>
-                  
-                  
+                  <input type="text" placeholder="Descrição" name="descEd" id="descEd" required />
                 </div>
-
-
-                <div class=" formboxed col-12 col-sm-12 col-md-12 col-lg-12">
-                  
-                  <div class="row"> 
-                    <label class="col col-sm col-md col-lg"> <span>Observação:</span></label>
-                    <input type="text" class="col col-sm col-md-7 col-lg-7 inputTextEd" placeholder="Observação" name="obsEd"
-                      id="obsEd" />
-                  </div>
-
-                </div>
-
               </div>
+
+              <div class="row formgroup">
+                <div class=" formboxed col-12 col-sm-12 col-md-12 col-lg-12">
+                  <label class=""> <span>Observação:</span></label>
+                  <input type="text" class="inputTextEd" placeholder="Observação" name="obsEd" id="obsEd" />
+                </div>
+              </div>
+
             </form>
           </div>
 
@@ -452,18 +383,79 @@
 
 
 
+
+
+
+  <div class="modal fade modalEvent" id="modalEvent" tabindex="-1" role="dialog" aria-labelledby="modalEvent"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Editar</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="container-fluid">
+            <form class="">
+              <div class="row formgroup">
+                <div class=" col col-sm col-md col-lg  formboxed ">
+                  <label> <span>Data</span></label>
+                  <input type="date" id="dateEvent" />
+                </div>
+              </div>
+
+              <div class="row formgroup">
+                <div class="col-12 col-sm-12 col-md-12 col-lg-12 formboxed">
+                  <label> <span>Título</span></label>
+                  <input type="text" placeholder="Nome do Evento/Compromisso" name="nameEvent" id="nameEvent"
+                    required />
+                </div>
+              </div>
+
+              <div class="row formgroup">
+                <div class=" formboxed col-12 col-sm-12 col-md-12 col-lg-12">
+                  <label class=""> <span>Observação:</span></label>
+                  <input type="text" class="inputTextEd" placeholder="Observação" name="obsEvent" id="obsEvent" />
+                </div>
+              </div>
+            </form>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-success add-event">Salvar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-    crossorigin="anonymous"></script>
+    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
+    </script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
-    integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
-    crossorigin="anonymous"></script>
+    integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous">
+    </script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
-    integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
-    crossorigin="anonymous"></script>
+    integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous">
+    </script>
   <script src="./caleandar/caleandar.js"></script>
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/5.5.2/bootbox.min.js"></script>
 
   <script src="./script.js"></script>
 </body>
