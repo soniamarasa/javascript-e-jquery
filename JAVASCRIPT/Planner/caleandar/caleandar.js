@@ -221,6 +221,7 @@ function createCalendar(calendar, element, adjuster){
         if(evDate.getTime() == toDate.getTime()){
           number.className += " eventday";
           var title = document.createElement('span');
+      
           title.className += "cld-title";
           if(typeof calendar.Model[n].Link == 'function' || calendar.Options.EventClick){
             var a = document.createElement('a');

@@ -1031,11 +1031,18 @@ div .bootbox-body {
   text-align: center;
 }
 
-#addEvent {
+/* #addEvent {
   margin-top: 0.5em;
   text-align: center;
 }
 
 #event-modal i {
 padding-right: 0.2em;
+} */
+
+.eventday span {
+  background-color: black;
+
+
 }
+

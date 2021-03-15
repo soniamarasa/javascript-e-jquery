@@ -74,8 +74,7 @@
   position: absolute;
   z-index: 5;
   display: none;
-  top: 35px;
-  left: 0;
+  right: 5%;
   padding: 5px 10px;
   background: #312f2e;
   white-space: nowrap;
@@ -86,7 +85,8 @@
 .cld-number:hover .cld-title {
   display: block;
 }
-.cld-title::before {
+
+/* .cld-title::before {
   content: '';
   position: absolute;
   top: -7.5px;
@@ -96,8 +96,9 @@
   border-left: 7.5px solid transparent;
   border-right: 7.5px solid transparent;
 
-  border-bottom: 7.5px solid #ccc;
-}
+  border-bottom: 7.5px solid rgb(0, 0, 0);
+} */
+
 .cld-number.eventday {
   font-weight: bold;
   color: var(--tertiary-color);

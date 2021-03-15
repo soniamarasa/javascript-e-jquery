@@ -15,6 +15,7 @@ let where = [];
 let submit = null;
 let checkboxes = [];
 let daysList = document.querySelectorAll('.dia-semana');
+let segunda = [];
 
 let lastId = null;
 
@@ -25,7 +26,6 @@ let obsEd = document.querySelector('#obsEd');
 let updateItem = document.querySelector('.updateItem');
 let idCurrentItem = document.querySelector('#idItem');
 
-
 let getIdDay = [];
 
 let id = null;
@@ -33,6 +33,7 @@ let allItems = Array();
 let weeklist = document.querySelectorAll('.listagem');
 let itemList = [];
 let iconsAction = [];
+
 
 let typeValue = null;
 let whereValue = null;
@@ -54,38 +55,8 @@ let total = null;
 let porcent = null;
 let taskData = [];
 
-var settings = {
-  Color: '',
-  LinkColor: '',
-  NavShow: true,
-  NavVertical: false,
-  NavLocation: '',
-  DateTimeShow: true,
-  DateTimeFormat: 'mmm, yyyy',
-  DatetimeLocation: '',
-  EventClick: '',
-  EventTargetWholeDay: false,
-  DisabledDays: [],
-};
-
-var events = [
-  {
-    Date: new Date(2020, 9, 12),
-    Title: 'Dia das Crianças',
-  },
-  {
-    Date: new Date(2020, 9, 03),
-    Title: 'Niver Willian',
-  },
-  {
-    Date: new Date(2020, 11, 25),
-    Title: 'Feliz Natal',
-    Link: 'https://www.google.com',
-  },
-];
-
-var element = document.getElementById('caleandar');
-caleandar(element, events, settings);
+let dataPosition = document.querySelectorAll('[data-position]');
+console.log(dataPosition);
 
 body = document.querySelector('body');
 
@@ -177,18 +148,21 @@ window.addEventListener('load', () => {
     );
   }
 
+  
   dates();
   getItems();
-  itemList = document.querySelectorAll('.item');
-  itemList = Array.from(itemList);
-  applyclass();
 
+  itemList = document.querySelectorAll('.item');
+  itemList = Array.from(itemList); 
+
+  order();
+  applyclass();
   observation();
 });
 
 class Item {
   constructor(type, description, where) {
-      (this.type = type),
+    (this.type = type),
       (this.description = description),
       (this.where = where),
       (this.obs = ''),
@@ -289,7 +263,7 @@ function renderItems() {
   allItems.forEach((item) => {
     if (item.type === 'task') {
       itemList =
-        '<li  class="item task 1 " data-id="' +
+        '<li  class="item task " data-position="1" data-id="' +
         item.id +
         '">' +
         icons[0] +
@@ -297,7 +271,7 @@ function renderItems() {
         ' <span> </span> </li>';
     } else if (item.type === 'appointment') {
       itemList =
-        '<li  class="item appointment 2" data-id="' +
+        '<li  class="item appointment " data-position="2" data-id="' +
         item.id +
         '">' +
         icons[2] +
@@ -305,7 +279,7 @@ function renderItems() {
         ' <span> </span> </li>';
     } else if (item.type === 'event') {
       itemList =
-        '<li  class="item event 3 " data-id="' +
+        '<li  class="item event " data-position="3" data-id="' +
         item.id +
         '">' +
         icons[1] +
@@ -313,7 +287,7 @@ function renderItems() {
         ' <span> </span> </li>';
     } else if (item.type === 'note') {
       itemList =
-        '<li  class="item note 4" data-id="' +
+        '<li  class="item note " data-position="4" data-id="' +
         item.id +
         '">' +
         icons[3] +
@@ -321,7 +295,7 @@ function renderItems() {
         ' <span> </span> </li>';
     } else {
       itemList =
-        '<li  class="item tv 5" data-id="' +
+        '<li  class="item tv " data-position="5" data-id="' +
         item.id +
         '">' +
         icons[4] +
@@ -332,6 +306,7 @@ function renderItems() {
     switch (item.where) {
       case 'mon':
         weeklist[0].innerHTML += itemList;
+        segunda.push(itemList);
         break;
       case 'tue':
         weeklist[1].innerHTML += itemList;
@@ -360,9 +335,19 @@ function renderItems() {
         break;
     }
   });
+  console.log(segunda);
 }
 
+
+function order() {
+  segunda.forEach((item) => {
+ 
+  })
+}
+
+
 function applyclass() {
+  console.log(itemList[36].dataset.position)
   for (i = 0; i < itemList.length; i++) {
     let id = itemList[i].dataset.id;
 
