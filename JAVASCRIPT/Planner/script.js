@@ -15,25 +15,34 @@ let where = [];
 let submit = null;
 let checkboxes = [];
 let daysList = document.querySelectorAll('.dia-semana');
-let segunda = [];
+let monList = [];
+let tueList = [];
+let wedList = [];
+let thuList = [];
+let friList = [];
+let satList = [];
+let sunList = [];
+let daysWeekList = [[], [], [], [], [], [], []];
+
+// Criei acima uma variavel para cada dia da semana que vai ser um array recebendo todos itens li da lista
+// Criei outra variavl que é um array de arrays (Usar esse ou as variaveis diarias)
 
 let lastId = null;
 
-let typeEd = document.querySelector('#typeEd');
-let whereEd = document.querySelector('#whereEd');
-let descEd = document.querySelector('#descEd');
-let obsEd = document.querySelector('#obsEd');
-let updateItem = document.querySelector('.updateItem');
-let idCurrentItem = document.querySelector('#idItem');
+const typeEd = document.querySelector('#typeEd');
+const whereEd = document.querySelector('#whereEd');
+const descEd = document.querySelector('#descEd');
+const obsEd = document.querySelector('#obsEd');
+const updateItem = document.querySelector('.updateItem');
+const idCurrentItem = document.querySelector('#idItem');
 
 let getIdDay = [];
 
 let id = null;
 let allItems = Array();
-let weeklist = document.querySelectorAll('.listagem');
+const weeklist = document.querySelectorAll('.listagem');
 let itemList = [];
 let iconsAction = [];
-
 
 let typeValue = null;
 let whereValue = null;
@@ -44,7 +53,7 @@ let currentDataId;
 let itemDataBase;
 let getItem = null;
 
-let totalTarefas = document.querySelector('#totalT');
+const totalTarefas = document.querySelector('#totalT');
 let tarefas = null;
 let emAberto = null;
 let iniciadas = null;
@@ -55,7 +64,7 @@ let total = null;
 let porcent = null;
 let taskData = [];
 
-let dataPosition = document.querySelectorAll('[data-position]');
+const dataPosition = document.querySelectorAll('[data-position]');
 console.log(dataPosition);
 
 body = document.querySelector('body');
@@ -148,14 +157,13 @@ window.addEventListener('load', () => {
     );
   }
 
-  
   dates();
   getItems();
 
   itemList = document.querySelectorAll('.item');
-  itemList = Array.from(itemList); 
+  itemList = Array.from(itemList);
 
-  order();
+  // order();
   applyclass();
   observation();
 });
@@ -306,25 +314,35 @@ function renderItems() {
     switch (item.where) {
       case 'mon':
         weeklist[0].innerHTML += itemList;
-        segunda.push(itemList);
+        monList.push(itemList);
+        daysWeekList[0].push(itemList);
+
         break;
       case 'tue':
         weeklist[1].innerHTML += itemList;
+        tueList.push(itemList);
+        daysWeekList[1].push(itemList);
+
         break;
       case 'wed':
         weeklist[2].innerHTML += itemList;
+        wedList.push(itemList);
         break;
       case 'thu':
         weeklist[3].innerHTML += itemList;
+        thuList.push(itemList);
         break;
       case 'fri':
         weeklist[4].innerHTML += itemList;
+        friList.push(itemList);
         break;
       case 'sat':
         weeklist[5].innerHTML += itemList;
+        satList.push(itemList);
         break;
       case 'sun':
         weeklist[6].innerHTML += itemList;
+        sunList.push(itemList);
         break;
       case 'notes':
         notes[0].innerHTML += itemList;
@@ -335,19 +353,24 @@ function renderItems() {
         break;
     }
   });
-  console.log(segunda);
+  console.log(
+    monList,
+    tueList,
+    wedList,
+    thuList,
+    friList,
+    satList,
+    sunList,
+    daysWeekList
+  );
 }
-
 
 function order() {
-  segunda.forEach((item) => {
- 
-  })
+  segunda.forEach((item) => {});
 }
 
-
 function applyclass() {
-  console.log(itemList[36].dataset.position)
+  // console.log(itemList[36].dataset.position)
   for (i = 0; i < itemList.length; i++) {
     let id = itemList[i].dataset.id;
 
@@ -563,9 +586,8 @@ function dates() {
 
 function pieChart(taskData) {
   var Canvas = document.getElementById('pieChart');
-
-  Chart.defaults.global.defaultFontFamily = 'Abel';
-  Chart.defaults.global.defaultFontSize = 18;
+  //   Chart.defaults.global.defaultFontFamily = 'Abel';
+  //  Chart.defaults.global.defaultFontSize = 18;
 
   var itemData = {
     labels: [
